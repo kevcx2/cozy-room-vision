@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Project Cozy Room — Vision v3 · Axis Matrix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1d1f1c;
+    --ink-soft:#3a3d38;
+    --ink-mute:#6a6d65;
+    --paper:#f4efe6;
+    --paper-warm:#e9e1d2;
+    --green:#1f3329;
+    --green-deep:#152620;
+    --cognac:#8a4f2a;
+    --cream:#e6dcc8;
+    --rule:#c9bfa9;
+    --accent:#a85a32;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}
+  body{font-family:"Inter",system-ui,sans-serif;font-weight:400;line-height:1.6;font-size:16px}
+  h1,h2,h3,h4,.serif{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;letter-spacing:.01em;line-height:1.15;color:var(--ink)}
+  h1{font-size:clamp(3rem,7vw,6rem);font-weight:500;margin:0}
+  h2{font-size:clamp(2rem,4.5vw,3.6rem);margin:0 0 .3em}
+  h3{font-size:clamp(1.4rem,2.5vw,2rem);margin:0 0 .25em}
+  h4{font-size:1.05rem;letter-spacing:.18em;text-transform:uppercase;font-family:"Inter",sans-serif;font-weight:500;color:var(--ink-soft);margin:0 0 1.2em}
+  p{margin:0 0 1em;max-width:62ch}
+  em{font-style:italic;color:var(--ink-soft)}
+  a{color:var(--cognac)}
+  hr{border:0;border-top:1px solid var(--rule);margin:0}
+  code{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.86rem}
+
+  nav.top{position:sticky;top:0;z-index:50;background:rgba(244,239,230,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);padding:.8em 6vw;display:flex;gap:1.4em;align-items:center;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)}
+  nav.top a{color:var(--ink-soft);text-decoration:none}
+  nav.top a:hover{color:var(--ink)}
+  nav.top .brand{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1rem;letter-spacing:0;text-transform:none;color:var(--ink);margin-right:auto}
+
+  section{padding:7vh 6vw;border-bottom:1px solid var(--rule);position:relative}
+  section.dark{background:var(--green);color:var(--paper)}
+  section.dark h1,section.dark h2,section.dark h3{color:var(--paper)}
+  section.dark h4{color:var(--paper-warm);opacity:.7}
+  section.dark p{color:var(--paper-warm)}
+  section.warm{background:var(--paper-warm)}
+
+  .eyebrow{font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:1.5em}
+  .lede{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(1.2rem,2vw,1.6rem);font-style:italic;color:var(--ink-soft);max-width:54ch;line-height:1.4}
+
+  .hero{min-height:90vh;display:flex;flex-direction:column;justify-content:space-between;padding:6vh 6vw}
+  .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:2em;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+  .hero-mid{margin-top:auto;margin-bottom:auto}
+  .hero h1 span{color:var(--green);font-style:italic}
+  .hero-sub{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-size:clamp(1.2rem,2vw,1.7rem);color:var(--ink-soft);margin-top:1em;max-width:46ch}
+  .hero-bot{display:flex;justify-content:space-between;align-items:flex-end;gap:2em;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+
+  figure{margin:0}
+  figure img{width:100%;height:auto;display:block;border-radius:2px;background:#ddd}
+  figcaption{font-size:.82rem;color:var(--ink-soft);margin-top:.7em;line-height:1.4}
+  figcaption strong{color:var(--ink);font-weight:500}
+  .dark figcaption{color:var(--paper-warm)}
+  .dark figcaption strong{color:var(--paper)}
+
+  .kicker{display:inline-block;font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft);padding:.4em .8em;border:1px solid var(--rule);border-radius:99px;margin-bottom:1.5em}
+  .dark .kicker{color:var(--paper-warm);border-color:rgba(244,239,230,.3)}
+
+  /* Direction baseline hero */
+  .baseline{display:grid;grid-template-columns:1.4fr 1fr;gap:3vw;align-items:center;margin-bottom:5vh}
+  @media(max-width:980px){.baseline{grid-template-columns:1fr}}
+  .baseline figure img{border:1px solid var(--rule)}
+  .dark .baseline figure img{border-color:rgba(244,239,230,.15)}
+
+  /* Axis row */
+  .axis{margin:5vh 0;border-top:1px dashed var(--rule);padding-top:3vh}
+  .dark .axis{border-top-color:rgba(244,239,230,.18)}
+  .axis-head{display:flex;align-items:baseline;gap:1em;margin-bottom:1.4em;flex-wrap:wrap}
+  .axis-head .ax-num{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.4rem;color:var(--accent);min-width:1.8em}
+  .axis-head .ax-name{font-family:"Cormorant Garamond",serif;font-size:1.7rem;line-height:1.1}
+  .axis-head .ax-sub{font-size:.74rem;color:var(--ink-soft);letter-spacing:.14em;text-transform:uppercase;margin-left:.6em}
+  .dark .axis-head .ax-sub{color:var(--paper-warm)}
+  .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media(max-width:780px){.row3{grid-template-columns:1fr}}
+  .opt{position:relative}
+  .opt figure img{border:1px solid var(--rule)}
+  .dark .opt figure img{border-color:rgba(244,239,230,.15)}
+  .opt .tag{position:absolute;top:.7em;left:.7em;background:rgba(244,239,230,.92);color:var(--ink);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;padding:.32em .65em;border-radius:2px;font-weight:500}
+  .opt .tag.is-base{background:var(--green);color:var(--paper)}
+  .opt .name{font-family:"Cormorant Garamond",serif;font-size:1.15rem;margin-top:.7em;color:var(--ink)}
+  .dark .opt .name{color:var(--paper)}
+  .opt .desc{font-size:.84rem;color:var(--ink-soft);line-height:1.45;margin-top:.2em}
+  .dark .opt .desc{color:var(--paper-warm)}
+
+  /* Moodboard mosaic */
+  .mood{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;margin-top:3vh}
+  .mood figure{grid-column:span 2}
+  .mood figure.wide{grid-column:span 3}
+  .mood figure.full{grid-column:span 6}
+  @media(max-width:980px){.mood{grid-template-columns:repeat(2,1fr)}.mood figure,.mood figure.wide,.mood figure.full{grid-column:span 2}}
+  .mood figure img{border:1px solid var(--rule)}
+  .dark .mood figure img{border-color:rgba(244,239,230,.15)}
+  .mood figcaption{font-size:.74rem;letter-spacing:.04em}
+
+  .closer{padding:14vh 6vw;text-align:center}
+  .closer h2{margin-bottom:.4em}
+  .closer p{margin-left:auto;margin-right:auto}
+
+  .ledger{display:grid;grid-template-columns:1fr 1fr;gap:1.6em 3em;margin-top:1.5em;font-size:.93rem}
+  .ledger .row{display:grid;grid-template-columns:120px 1fr;gap:.8em;padding:.5em 0;border-bottom:1px dashed var(--rule)}
+  .dark .ledger .row{border-bottom-color:rgba(244,239,230,.18)}
+  .ledger .label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);align-self:center}
+  .dark .ledger .label{color:var(--paper-warm)}
+  @media(max-width:780px){.ledger{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <span class="brand">Project Cozy Room — <em>Vision v3</em></span>
+  <a href="#lib">Library</a>
+  <a href="#jap">Japandi</a>
+  <a href="#how">Method</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-top">
+    <div>Vision · v3</div>
+    <div>Axis Matrix · 30 Renders</div>
+    <div>2026 · 04 · 26</div>
+  </div>
+  <div class="hero-mid">
+    <div class="eyebrow">Designer's Cut</div>
+    <h1>The <span>Axis</span><br>Matrix.</h1>
+    <p class="hero-sub">Two directions. Four dimensions each. Hold the room's bones, swap one variable at a time. Pick the upholstery you love, the drapes that lift it, the rug that holds it down, and the wall that frames it.</p>
+  </div>
+  <div class="hero-bot">
+    <div>v3 — Non-Leather Edition</div>
+    <div>18 Rooms + 12 Moodboards</div>
+    <div>JC · Denton</div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section id="how" class="warm">
+  <div class="eyebrow">How to read this</div>
+  <h2>One axis at a time.</h2>
+  <p class="lede">Every render holds the same room — short green wall with the stove, long green wall with two windows and a french door, white walls and ceiling, light-oak floor, inglenook-tight loveseat, 2400K pool-of-light, lived-in clutter. Only the named variable changes. That's how we isolate <em>what</em> you're choosing.</p>
+
+  <div class="ledger">
+    <div class="row"><div class="label">Couch</div><div>Upholstery — color, fiber, slipcover language.</div></div>
+    <div class="row"><div class="label">Drape</div><div>Window mood — neutral linen, color drop, pattern.</div></div>
+    <div class="row"><div class="label">Rug</div><div>Floor anchor — pattern density, palette weight.</div></div>
+    <div class="row"><div class="label">Wall</div><div>Long white wall — clean, shelved, salon-hung.</div></div>
+  </div>
+</section>
+
+<!-- ============ DIRECTION 1: LIBRARY ============ -->
+<section id="lib" class="dark">
+  <span class="kicker">Direction 01 · Library</span>
+  <h2>The tenured professor falls asleep with a book on their chest.</h2>
+  <p class="lede" style="color:var(--paper-warm)">Walnut-mantel electric stove on the short green wall. Oxblood velvet Chesterfield-roll loveseat tucked tight to the hearth. Brass banker's lamp glow. Faded Heriz under everything. Books, slippers, dog.</p>
+
+  <!-- Library Baseline -->
+  <div class="baseline">
+    <figure>
+      <img src="renders/v3/LIB-baseline.png" alt="Library baseline">
+      <figcaption><strong>Baseline.</strong> Oxblood velvet Chesterfield-roll loveseat · mushroom-linen drapes · faded Heriz Persian · clean wall with a brass-lit botanical.</figcaption>
+    </figure>
+    <div>
+      <h4>The bones we hold</h4>
+      <p>Walnut-mantel electric stove with raw-stone hearth. Loveseat ~36" off the hearth, angled 15° in. Tartan dog bed at the hearth, slippers on the rug. Brass banker's lamp lit at 2400K, brass picture light over a small framed botanical, overhead off.</p>
+      <p>The variants below all sit inside this room. Pick what you love on each axis — they compose.</p>
+    </div>
+  </div>
+
+  <!-- Axis 1: COUCH -->
+  <div class="axis">
+    <div class="axis-head">
+      <span class="ax-num">01</span>
+      <span class="ax-name">Couch</span>
+      <span class="ax-sub">Upholstery swap</span>
+    </div>
+    <div class="row3">
+      <div class="opt">
+        <figure><img src="renders/v3/LIB-couch-mohair.png" alt="Library — mohair forest-green couch"><figcaption></figcaption></figure>
+        <span class="tag">Option A</span>
+        <div class="name">Mohair · forest green</div>
+        <div class="desc">Plush mohair velvet in deep forest, melts into the green walls so the loveseat reads as part of the architecture. Most enveloping of the three.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/LIB-baseline.png" alt="Library baseline — oxblood velvet"><figcaption></figcaption></figure>
+        <span class="tag is-base">Baseline</span>
+        <div class="name">Velvet · oxblood</div>
+        <div class="desc">Crushed oxblood velvet with brass nailhead. The "fall asleep here" choice — the warmest possible heart for a green-walled room.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/LIB-couch-mushroom.png" alt="Library — mushroom linen slipcover"><figcaption></figcaption></figure>
+        <span class="tag">Option C</span>
+        <div class="name">Linen · mushroom</div>
+        <div class="desc">Crumpled stonewashed mushroom-linen slipcover. Lightens the room, keeps the lived-in slump, lets the brass and Heriz do more work.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Axis 2: DRAPE -->
+  <div class="axis">
+    <div class="axis-head">
+      <span class="ax-num">02</span>
+      <span class="ax-name">Drape</span>
+      <span class="ax-sub">Window mood</span>
+    </div>
+    <div class="row3">
+      <div class="opt">
+        <figure><img src="renders/v3/LIB-drape-oxblood.png" alt="Library — oxblood velvet drapes"><figcaption></figcaption></figure>
+        <span class="tag">Option A</span>
+        <div class="name">Velvet · oxblood</div>
+        <div class="desc">Heavy oxblood velvet drapes pull the loveseat color up the wall. Most theatrical — the room reads like a private library.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/LIB-baseline.png" alt="Library baseline — mushroom linen drapes"><figcaption></figcaption></figure>
+        <span class="tag is-base">Baseline</span>
+        <div class="name">Linen · mushroom</div>
+        <div class="desc">Heavy mushroom-linen drapes with a 2-inch puddle. Quiet neutral that lets the oxblood couch and Heriz be the heroes.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/LIB-drape-plaid.png" alt="Library — Pendleton plaid drapes"><figcaption></figcaption></figure>
+        <span class="tag">Option C</span>
+        <div class="name">Wool · plaid</div>
+        <div class="desc">Heavy wool plaid drapes (heather greys + russet). Pure cottage-shooting-lodge energy. Strongest pattern note in the whole room.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Axis 3: RUG -->
+  <div class="axis">
+    <div class="axis-head">
+      <span class="ax-num">03</span>
+      <span class="ax-name">Rug</span>
+      <span class="ax-sub">Floor anchor</span>
+    </div>
+    <div class="row3">
+      <div class="opt">
+        <figure><img src="renders/v3/LIB-rug-bokhara.png" alt="Library — Bokhara rug"><figcaption></figcaption></figure>
+        <span class="tag">Option A</span>
+        <div class="name">Bokhara · burgundy</div>
+        <div class="desc">Repeating Bokhara guls in burgundy + indigo + cream. Tighter, more geometric, denser pattern than the Heriz.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/LIB-baseline.png" alt="Library baseline — Heriz rug"><figcaption></figcaption></figure>
+        <span class="tag is-base">Baseline</span>
+        <div class="name">Heriz · faded</div>
+        <div class="desc">Faded Heriz Persian — large medallion, soft rust + indigo + cream. The classic library rug. Warm but not loud.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/LIB-rug-tabriz.png" alt="Library — Tabriz rug"><figcaption></figcaption></figure>
+        <span class="tag">Option C</span>
+        <div class="name">Tabriz · indigo ground</div>
+        <div class="desc">Antique Tabriz with indigo ground and ivory medallion. Deeper, cooler, more formal — pulls the room toward "study."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Axis 4: WALL -->
+  <div class="axis">
+    <div class="axis-head">
+      <span class="ax-num">04</span>
+      <span class="ax-name">Wall</span>
+      <span class="ax-sub">Long white wall</span>
+    </div>
+    <div class="row3">
+      <div class="opt">
+        <figure><img src="renders/v3/LIB-baseline.png" alt="Library — clean wall"><figcaption></figcaption></figure>
+        <span class="tag is-base">Baseline</span>
+        <div class="name">Clean</div>
+        <div class="desc">A single small framed botanical with brass picture light. Restraint — the eye rests on the loveseat and stove.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/LIB-wall-shelved.png" alt="Library — built-in bookshelves"><figcaption></figcaption></figure>
+        <span class="tag">Option B</span>
+        <div class="name">Shelved</div>
+        <div class="desc">Walnut built-ins floor to ceiling, antique cloth-bound books, brass picture lights, a globe and brass candlesticks. The full professor.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/LIB-wall-cluttered.png" alt="Library — salon-hung gallery wall"><figcaption></figcaption></figure>
+        <span class="tag">Option C</span>
+        <div class="name">Salon-hung</div>
+        <div class="desc">Dense salon-style gallery — botanicals, oil landscapes, etchings, old maps in mismatched gold and walnut frames. Maximalist Nancy Meyers.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Library Moodboard -->
+  <div class="axis">
+    <div class="axis-head">
+      <span class="ax-num">★</span>
+      <span class="ax-name">Texture & detail</span>
+      <span class="ax-sub">Library moodboard</span>
+    </div>
+    <div class="mood">
+      <figure class="wide"><img src="renders/v3/MOOD-LIB-mantel.png" alt=""><figcaption><strong>Mantel.</strong> Walnut floating mantel, brass picture light over an antique oil landscape, half-burned beeswax pillar, brass clock, leather book.</figcaption></figure>
+      <figure class="wide"><img src="renders/v3/MOOD-LIB-side-table.png" alt=""><figcaption><strong>Side table.</strong> Brass banker's lamp glowing 2400K, half-drunk stoneware mug on a brass coaster, open book face-down with reading glasses on top.</figcaption></figure>
+      <figure><img src="renders/v3/MOOD-LIB-velvet-macro.png" alt=""><figcaption><strong>Velvet macro.</strong> Crushed oxblood velvet pile, brass nailhead, plaid throw corner.</figcaption></figure>
+      <figure><img src="renders/v3/MOOD-LIB-drape-detail.png" alt=""><figcaption><strong>Drape puddle.</strong> Mushroom linen, 2-inch floor puddle, sliver of cool window light.</figcaption></figure>
+      <figure><img src="renders/v3/MOOD-LIB-hearth-foot.png" alt=""><figcaption><strong>Hearth foot.</strong> Golden retriever asleep on a tartan dog bed, slippers, antique book stack.</figcaption></figure>
+      <figure class="full"><img src="renders/v3/MOOD-LIB-bookshelf-stack.png" alt=""><figcaption><strong>Bookshelf vignette.</strong> Walnut shelves of antique cloth-bound books with a brass picture light, candlestick, framed botanical, globe, and ink bottle.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIRECTION 2: JAPANDI ============ -->
+<section id="jap">
+  <span class="kicker">Direction 02 · Japandi</span>
+  <h2>Deep enough you forget what you came in for.</h2>
+  <p class="lede">Matte-black freestanding stove on the short green wall. Sixpenny Neva loveseat tucked tight to the hearth, slipcover crumpled. Akari paper lantern glow. Layered jute and Beni Ourain. Sumi-e scroll. Restraint is the move.</p>
+
+  <!-- Japandi Baseline -->
+  <div class="baseline">
+    <figure>
+      <img src="renders/v3/JAP-baseline.png" alt="Japandi baseline">
+      <figcaption><strong>Baseline.</strong> Sixpenny Neva loveseat in pebble Belgian linen · stonewashed natural-linen drapes · jute + Beni Ourain · clean wall with a single sumi-e ink scroll.</figcaption>
+    </figure>
+    <div>
+      <h4>The bones we hold</h4>
+      <p>Matte-black cast-iron-look electric stove with raw-stone hearth pad. Live-edge oak mantel. Loveseat ~36" off the hearth, angled 15° in. Akari paper-lantern floor lamp behind, plug-in linen-shaded sconce, overhead off.</p>
+      <p>Same room. Different palette logic — quieter, more breathable, but every bit as warm.</p>
+    </div>
+  </div>
+
+  <!-- Axis 1: COUCH -->
+  <div class="axis">
+    <div class="axis-head">
+      <span class="ax-num">01</span>
+      <span class="ax-name">Couch</span>
+      <span class="ax-sub">Upholstery swap</span>
+    </div>
+    <div class="row3">
+      <div class="opt">
+        <figure><img src="renders/v3/JAP-couch-indigo.png" alt="Japandi — indigo boro couch"><figcaption></figcaption></figure>
+        <span class="tag">Option A</span>
+        <div class="name">Indigo · boro</div>
+        <div class="desc">Deep saturated indigo-dyed cotton slipcover with a sashiko-mended boro patch. The most graphic, most Japan-blue of the three.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/JAP-baseline.png" alt="Japandi baseline — pebble linen"><figcaption></figcaption></figure>
+        <span class="tag is-base">Baseline</span>
+        <div class="name">Linen · pebble</div>
+        <div class="desc">Crumpled pebble Belgian-linen slipcover, Sixpenny Neva slump. The quiet hero — disappears so the texture and light can carry.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/JAP-couch-boucle.png" alt="Japandi — cream boucle couch"><figcaption></figcaption></figure>
+        <span class="tag">Option C</span>
+        <div class="name">Bouclé · cream</div>
+        <div class="desc">Thick nubby cream bouclé. Softer, fluffier, more new — pulls the room slightly toward Scandinavian.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Axis 2: DRAPE -->
+  <div class="axis">
+    <div class="axis-head">
+      <span class="ax-num">02</span>
+      <span class="ax-name">Drape</span>
+      <span class="ax-sub">Window mood</span>
+    </div>
+    <div class="row3">
+      <div class="opt">
+        <figure><img src="renders/v3/JAP-drape-charcoal.png" alt="Japandi — charcoal linen drapes"><figcaption></figcaption></figure>
+        <span class="tag">Option A</span>
+        <div class="name">Linen · charcoal</div>
+        <div class="desc">Heavy stonewashed charcoal linen. Cools the room down — the dark drape pairs with the dark green walls for a deep, womb-like envelope.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/JAP-baseline.png" alt="Japandi baseline — natural linen"><figcaption></figcaption></figure>
+        <span class="tag is-base">Baseline</span>
+        <div class="name">Linen · natural</div>
+        <div class="desc">Stonewashed natural-linen drapes, drawn three-quarters with a 2-inch puddle. Bright, breathable, lets the green walls read deeper.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/JAP-drape-noren.png" alt="Japandi — indigo noren panels"><figcaption></figcaption></figure>
+        <span class="tag">Option C</span>
+        <div class="name">Noren · shibori indigo</div>
+        <div class="desc">Indigo shibori-dyed linen noren panels with white organic resist. Most explicitly Japanese — graphic, hand-made, signature.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Axis 3: RUG -->
+  <div class="axis">
+    <div class="axis-head">
+      <span class="ax-num">03</span>
+      <span class="ax-name">Rug</span>
+      <span class="ax-sub">Floor anchor</span>
+    </div>
+    <div class="row3">
+      <div class="opt">
+        <figure><img src="renders/v3/JAP-rug-kasuri.png" alt="Japandi — kasuri ikat rug"><figcaption></figcaption></figure>
+        <span class="tag">Option A</span>
+        <div class="name">Kasuri · indigo ikat</div>
+        <div class="desc">Dark indigo-and-cream Japanese kasuri-pattern flatweave layered on jute. The strongest graphic floor note — pure indigo geometry.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/JAP-baseline.png" alt="Japandi baseline — Beni Ourain on jute"><figcaption></figcaption></figure>
+        <span class="tag is-base">Baseline</span>
+        <div class="name">Jute + Beni Ourain</div>
+        <div class="desc">Oversized jute flatweave base, cream Beni Ourain low-pile under the front legs. Quiet, textural, neutral — the most "disappear" floor.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/JAP-rug-tatami.png" alt="Japandi — tatami-edged rug"><figcaption></figcaption></figure>
+        <span class="tag">Option C</span>
+        <div class="name">Tatami · banded</div>
+        <div class="desc">Tatami-style woven rush with dark indigo cloth banding. Most architectural — reads as floor structure, not decoration.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Axis 4: WALL -->
+  <div class="axis">
+    <div class="axis-head">
+      <span class="ax-num">04</span>
+      <span class="ax-name">Wall</span>
+      <span class="ax-sub">Long white wall</span>
+    </div>
+    <div class="row3">
+      <div class="opt">
+        <figure><img src="renders/v3/JAP-baseline.png" alt="Japandi — clean wall"><figcaption></figcaption></figure>
+        <span class="tag is-base">Baseline</span>
+        <div class="name">Clean · sumi-e</div>
+        <div class="desc">A single sumi-e ink scroll at eye level on the long white wall. Rest blank. Restraint <em>is</em> the move.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/JAP-wall-shelved.png" alt="Japandi — live-edge floating shelves"><figcaption></figcaption></figure>
+        <span class="tag">Option B</span>
+        <div class="name">Shelved</div>
+        <div class="desc">Three live-edge oak floating shelves, sparingly populated — single stoneware vessel, hand-thrown bowl, cloth-bound book per shelf.</div>
+      </div>
+      <div class="opt">
+        <figure><img src="renders/v3/JAP-wall-cluttered.png" alt="Japandi — wabi-sabi gallery wall"><figcaption></figcaption></figure>
+        <span class="tag">Option C</span>
+        <div class="name">Wabi-sabi grid</div>
+        <div class="desc">Asymmetric grid of small frames — sumi-e fragments, indigo textile swatches, small ceramics on tiny brackets. Maximalist <em>by Japandi standards</em>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Japandi Moodboard -->
+  <div class="axis">
+    <div class="axis-head">
+      <span class="ax-num">★</span>
+      <span class="ax-name">Texture & detail</span>
+      <span class="ax-sub">Japandi moodboard</span>
+    </div>
+    <div class="mood">
+      <figure class="wide"><img src="renders/v3/MOOD-JAP-mantel.png" alt=""><figcaption><strong>Mantel.</strong> Live-edge oak floating mantel, dried magnolia in cream stoneware, half-burned beeswax candle on a stoneware saucer.</figcaption></figure>
+      <figure class="wide"><img src="renders/v3/MOOD-JAP-side-table.png" alt=""><figcaption><strong>Side table.</strong> Round oak at seat-cushion height, hand-thrown stoneware mug, open cloth-bound book, Akari lantern glow.</figcaption></figure>
+      <figure><img src="renders/v3/MOOD-JAP-linen-macro.png" alt=""><figcaption><strong>Linen macro.</strong> Crumpled pebble linen, cream cable-knit, Icelandic sheepskin spilling.</figcaption></figure>
+      <figure><img src="renders/v3/MOOD-JAP-noren-detail.png" alt=""><figcaption><strong>Noren.</strong> Indigo shibori panel on an oak rod, paper-lantern glow.</figcaption></figure>
+      <figure><img src="renders/v3/MOOD-JAP-hearth-foot.png" alt=""><figcaption><strong>Hearth foot.</strong> Felted-wool slippers on jute, golden retriever in a felted dog bed, stove glow.</figcaption></figure>
+      <figure class="full"><img src="renders/v3/MOOD-JAP-shelf-vignette.png" alt=""><figcaption><strong>Shelf vignette.</strong> Live-edge oak floating shelf on green: stoneware vase with a cherry-blossom branch, hand-thrown tea bowl, folded sashiko boro cloth, single cloth-bound book. Restraint is the move.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSER -->
+<section class="warm closer">
+  <span class="eyebrow">Compose your own</span>
+  <h2>Pick one from each axis.</h2>
+  <p class="lede">The room's bones don't change. Tell me which couch, which drape, which rug, which wall — and which direction. v4 will render the composite.</p>
+</section>
+
+</body>
+</html>
