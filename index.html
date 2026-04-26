@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Project Cozy Room — Vision v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1d1f1c;
+    --ink-soft:#3a3d38;
+    --paper:#f4efe6;
+    --paper-warm:#e9e1d2;
+    --green:#2e423a;
+    --green-deep:#1f2e29;
+    --cognac:#8a4f2a;
+    --cream:#e6dcc8;
+    --rule:#c9bfa9;
+    --accent:#a85a32;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}
+  body{font-family:"Inter",system-ui,sans-serif;font-weight:400;line-height:1.6;font-size:16px}
+  h1,h2,h3,h4,.serif{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;letter-spacing:.01em;line-height:1.15;color:var(--ink)}
+  h1{font-size:clamp(3rem,7vw,6rem);font-weight:500;margin:0}
+  h2{font-size:clamp(2rem,4.5vw,3.6rem);margin:0 0 .3em}
+  h3{font-size:clamp(1.4rem,2.5vw,2rem);margin:0 0 .25em}
+  h4{font-size:1.05rem;letter-spacing:.18em;text-transform:uppercase;font-family:"Inter",sans-serif;font-weight:500;color:var(--ink-soft);margin:0 0 1.2em}
+  p{margin:0 0 1em;max-width:62ch}
+  em{font-style:italic;color:var(--ink-soft)}
+  a{color:var(--cognac)}
+  hr{border:0;border-top:1px solid var(--rule);margin:0}
+
+  /* layout */
+  section{padding:7vh 8vw;border-bottom:1px solid var(--rule);position:relative}
+  section.dark{background:var(--green);color:var(--paper)}
+  section.dark h1,section.dark h2,section.dark h3{color:var(--paper)}
+  section.dark h4{color:var(--paper-warm);opacity:.7}
+  section.dark p{color:var(--paper-warm)}
+  section.warm{background:var(--paper-warm)}
+
+  .eyebrow{font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:1.5em}
+  .lede{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(1.2rem,2vw,1.6rem);font-style:italic;color:var(--ink-soft);max-width:42ch;line-height:1.4}
+
+  /* hero */
+  .hero{min-height:96vh;display:flex;flex-direction:column;justify-content:space-between;padding:6vh 8vw}
+  .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:2em;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+  .hero-mid{margin-top:auto;margin-bottom:auto}
+  .hero h1 span{color:var(--green);font-style:italic}
+  .hero-sub{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-size:clamp(1.2rem,2vw,1.7rem);color:var(--ink-soft);margin-top:1em;max-width:42ch}
+  .hero-bot{display:flex;justify-content:space-between;align-items:flex-end;gap:2em;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+
+  /* utility */
+  .grid{display:grid;gap:24px}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:780px){.g3,.g2{grid-template-columns:1fr}}
+  figure{margin:0}
+  figure img{width:100%;height:auto;display:block;border-radius:2px;background:#ddd}
+  figcaption{font-size:.78rem;letter-spacing:.05em;color:var(--ink-soft);margin-top:.7em;font-style:italic;line-height:1.4}
+
+  .kicker{display:inline-block;font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft);padding:.4em .8em;border:1px solid var(--rule);border-radius:99px;margin-bottom:1.5em}
+  .dark .kicker{color:var(--paper-warm);border-color:rgba(244,239,230,.3)}
+
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:start}
+  @media(max-width:980px){.twocol{grid-template-columns:1fr}}
+
+  .palette{display:flex;gap:8px;margin:1em 0 1.5em;flex-wrap:wrap}
+  .swatch{width:42px;height:42px;border-radius:50%;border:2px solid rgba(0,0,0,.08);display:inline-block}
+
+  .pill{display:inline-block;padding:.3em .8em;border:1px solid var(--rule);border-radius:99px;font-size:.78rem;color:var(--ink-soft);margin:0 .3em .4em 0;background:rgba(255,255,255,.4)}
+  .dark .pill{border-color:rgba(244,239,230,.3);color:var(--paper-warm);background:rgba(244,239,230,.06)}
+
+  .keyitems{list-style:none;padding:0;margin:0}
+  .keyitems li{padding:.7em 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:140px 1fr auto;gap:1em;align-items:baseline;font-size:.95rem}
+  .keyitems li .what{color:var(--ink-soft);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
+  .keyitems li .pick{color:var(--ink)}
+  .keyitems li .price{color:var(--ink-soft);font-variant-numeric:tabular-nums;font-size:.85rem}
+  @media(max-width:600px){.keyitems li{grid-template-columns:1fr;gap:.2em}}
+
+  .vibe{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-size:clamp(1.2rem,2vw,1.55rem);line-height:1.45;color:var(--ink-soft);max-width:55ch;border-left:2px solid var(--rule);padding-left:1.4em;margin:1.5em 0}
+  .dark .vibe{color:var(--paper-warm);border-color:rgba(244,239,230,.4)}
+
+  /* direction header */
+  .d-head{display:flex;align-items:baseline;gap:1.2em;flex-wrap:wrap;margin-bottom:.5em}
+  .d-head .num{font-family:"Cormorant Garamond",serif;font-size:clamp(3rem,6vw,5rem);font-style:italic;color:var(--rule);line-height:1;font-weight:400}
+
+  /* compare */
+  table.compare{border-collapse:collapse;width:100%;margin-top:2em;font-size:.92rem}
+  table.compare th,table.compare td{padding:1em .8em;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule)}
+  table.compare th{font-weight:500;color:var(--ink-soft);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
+  table.compare tr td:first-child{font-weight:500;width:18%;color:var(--ink-soft)}
+  @media(max-width:780px){table.compare th,table.compare td{padding:.7em .4em;font-size:.85rem}}
+
+  /* process steps */
+  .steps{counter-reset:step;display:grid;grid-template-columns:repeat(4,1fr);gap:2em;margin-top:3em}
+  @media(max-width:980px){.steps{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.steps{grid-template-columns:1fr}}
+  .step{position:relative;padding-top:1.5em;border-top:1px solid var(--rule)}
+  .step::before{counter-increment:step;content:"0" counter(step);font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.1rem;color:var(--cognac);position:absolute;top:.5em;left:0}
+  .step h4{margin-top:1.3em}
+
+  /* photo grid for current state */
+  .photogrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px}
+  .photogrid img{width:100%;height:100%;object-fit:cover;display:block}
+  .photogrid > *:nth-child(1){grid-row:span 2}
+  @media(max-width:780px){.photogrid{grid-template-columns:1fr 1fr}.photogrid > *:nth-child(1){grid-row:auto}}
+
+  .nextsteps{display:grid;grid-template-columns:repeat(3,1fr);gap:2em;margin-top:2.5em}
+  @media(max-width:780px){.nextsteps{grid-template-columns:1fr}}
+  .nextsteps .step{padding:1.5em;border:1px solid var(--rule);border-radius:4px;background:rgba(255,255,255,.4)}
+  .dark .nextsteps .step{border-color:rgba(244,239,230,.2);background:rgba(244,239,230,.04)}
+
+  .imgwrap{position:relative}
+  .imgwrap .label{position:absolute;top:1em;left:1em;background:rgba(20,22,18,.7);color:#fff;padding:.3em .7em;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;backdrop-filter:blur(4px)}
+
+  .pin{display:inline-block;font-size:.78rem;color:var(--cognac);letter-spacing:.05em}
+  .pin::before{content:"●  "}
+
+  footer{padding:6vh 8vw;background:var(--ink);color:var(--paper-warm);font-size:.85rem;letter-spacing:.05em}
+  footer .sig{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.4rem;color:var(--paper)}
+</style>
+</head>
+<body>
+
+<!-- ============== COVER ============== -->
+<section class="hero">
+  <div class="hero-top">
+    <span>JC Denton · Studio Notes</span>
+    <span>v1 · 2026·04·26</span>
+  </div>
+  <div class="hero-mid">
+    <div class="eyebrow">Project Cozy Room — Vision Presentation</div>
+    <h1>A small room,<br><span>three quiet lives.</span></h1>
+    <div class="hero-sub">A walk-through of how we got from a cluttered office to three fully-formed candidate worlds — and which one I'd build for you.</div>
+  </div>
+  <div class="hero-bot">
+    <span>10 × 11 ft · Dark green wall · Light oak · Two windows</span>
+    <span>Scroll ↓</span>
+  </div>
+</section>
+
+<!-- ============== THE ROOM TODAY ============== -->
+<section>
+  <div class="kicker">Chapter 01 — The room today</div>
+  <h2>Good bones, hidden under stuff.</h2>
+  <p class="lede">Before anything else, I sat with what's already here. The accent wall — that deep forest green — is doing more work than you might realize. It's not a problem; it's the room's voice. The light oak floor is the second gift. The challenge isn't the architecture. It's the clutter.</p>
+
+  <div class="photogrid" style="margin-top:3em">
+    <figure><img src="img/IMG_7222.jpeg" alt="Room from doorway"><figcaption>From the doorway — the green wall meets the windows</figcaption></figure>
+    <figure><img src="img/IMG_7223.jpeg" alt="Looking at green wall"><figcaption>Two windows on the green wall, anchor for everything that comes next</figcaption></figure>
+    <figure><img src="img/IMG_7224.jpeg" alt="White wall side"><figcaption>The white side — opposite the accent wall</figcaption></figure>
+  </div>
+
+  <div class="twocol" style="margin-top:5em">
+    <div>
+      <h4>What it has going for it</h4>
+      <ul>
+        <li>A real, saturated accent wall — most rooms would kill for this</li>
+        <li>Warm-tone wood floor (cool grays would have made everything harder)</li>
+        <li>Two windows of generous natural light</li>
+        <li>White ceiling + trim keeps the green from feeling cave-like</li>
+      </ul>
+    </div>
+    <div>
+      <h4>What it's missing</h4>
+      <ul>
+        <li>Any horizontal anchor — no rug, no fireplace, no grounded seating</li>
+        <li>Layered light — there's only the one builder pendant</li>
+        <li>Soft surfaces — nothing to absorb sound, nothing to sink into</li>
+        <li>Curated decor at human eye-level</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============== THE BONES ============== -->
+<section class="warm">
+  <div class="kicker">Chapter 02 — The universal moves</div>
+  <h2>Six things every direction does.</h2>
+  <p class="lede">No matter which world we choose, this same checklist gets the room ~70% of the way. The directions diverge on style, not on these fundamentals.</p>
+
+  <div class="grid g3" style="margin-top:3em;gap:2.5em">
+    <div><h4>01 · Replace the pendant</h4><p>The cream drum is generic. A $90 swap to something with character resets the whole room.</p></div>
+    <div><h4>02 · Three light sources, three heights</h4><p>Floor lamp + table lamp + sconce or picture light. All warm 2700K. Overhead becomes the <em>last</em> thing on, not the first.</p></div>
+    <div><h4>03 · Drapery over the existing blinds</h4><p>Floor-length, hung high-and-wide, just kissing the floor. This single move buys a huge cozy multiplier.</p></div>
+    <div><h4>04 · One rug, not two</h4><p>The room is too small for floating zones. Anchor the loveseat with one big rug and let the oak breathe around it.</p></div>
+    <div><h4>05 · Don't match the green</h4><p>No green pillows, no sage throws. The wall is the statement. Everything else is warm contrast.</p></div>
+    <div><h4>06 · Fireplace as the wall anchor</h4><p>Plug-in unit centered on the green wall. No install, no venting. Becomes the focal point you face into.</p></div>
+  </div>
+</section>
+
+<!-- ============== PROCESS ============== -->
+<section class="dark">
+  <div class="kicker" style="color:var(--paper-warm);opacity:.7">Chapter 03 — How I worked</div>
+  <h2 style="color:var(--paper)">The process behind the renders.</h2>
+  <p class="lede" style="color:var(--paper-warm);opacity:.85">I didn't pick a style and shop. I ran the room through a parallel research-and-render pipeline, then let three distinct souls compete for the space.</p>
+
+  <div class="steps">
+    <div class="step">
+      <h4>Read the room</h4>
+      <p>Photographs analyzed for architecture, light, scale, palette, constraints. Notes saved to <span class="pin">current-state.md</span>.</p>
+    </div>
+    <div class="step">
+      <h4>Four parallel research dossiers</h4>
+      <p>Subagents pulled inspiration from r/CozyPlaces, dark-academia design blogs, cottage-coastal magazines, and Japandi 2026 trend reports. ~5,000 words of notes, 16 reference images.</p>
+    </div>
+    <div class="step">
+      <h4>Render against your real walls</h4>
+      <p>Used Gemini 3 Pro Image to redesign your <em>actual</em> photographs — preserving the green wall, windows, ceiling, and floor exactly. Six renders, three directions, two angles each.</p>
+    </div>
+    <div class="step">
+      <h4>Cost it, then present</h4>
+      <p>Each direction priced inside your $3–5K budget with named products at named prices. No vibes-only mood-boarding.</p>
+    </div>
+  </div>
+
+  <div class="twocol" style="margin-top:6em">
+    <div>
+      <h4>Tools used</h4>
+      <p>Gemini 3 Pro Image (primary render engine) · OpenAI gpt-image-1 (intended, but not enabled on the account) · Web research across 30+ sources · Self-built Node.js render pipeline at <span class="pin">vision/scripts/</span> for repeatable batches.</p>
+    </div>
+    <div>
+      <h4>Why three directions, not one</h4>
+      <p>You said "anywhere from cozy coastal to dark academia." That's a wide arc. Rather than guess your taste, I built one of each end and one in the middle — so you can choose by reaction, not by spec.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============== DIRECTION 1 ============== -->
+<section>
+  <div class="kicker">Chapter 04 — Direction One</div>
+  <div class="d-head">
+    <span class="num">01</span>
+    <h2>The Cozy Library.</h2>
+  </div>
+  <div class="vibe">A tenured professor's room. The dark green isn't a backdrop — it's the room's voice. Cognac leather, parchment cream, aged brass, the slow glow of a banker's lamp. Not gothic; gentle. A fire that doesn't crackle but glows, and a dog asleep on a faded Heriz at your feet.</div>
+
+  <div class="palette">
+    <span class="swatch" style="background:#2e423a" title="Existing forest green"></span>
+    <span class="swatch" style="background:#e6dcc8" title="Warm cream"></span>
+    <span class="swatch" style="background:#8a4f2a" title="Cognac leather"></span>
+    <span class="swatch" style="background:#a87c46" title="Aged brass"></span>
+    <span class="swatch" style="background:#2c2620" title="Soft warm-black"></span>
+    <span class="swatch" style="background:#7a2230" title="Oxblood spark"></span>
+  </div>
+
+  <div class="grid g2" style="margin-top:1em">
+    <figure class="imgwrap"><span class="label">View A · The reading corner</span><img src="renders/v1/d1-cozy-library-A.png" alt="Cozy library A"><figcaption>Cognac leather, brass picture light, banker's lamp, faded Persian, olive tree, layered linen drapery.</figcaption></figure>
+    <figure class="imgwrap"><span class="label">View B · The fireplace wall</span><img src="renders/v1/d1-cozy-library-B.png" alt="Cozy library B"><figcaption>Reclaimed-wood mantel + Dimplex insert centered on the green wall. The room reads warm-lamplit even mid-afternoon.</figcaption></figure>
+  </div>
+
+  <div class="twocol" style="margin-top:4em">
+    <div>
+      <h4>Material story</h4>
+      <p>Top-grain cognac leather (sheds dog hair with one wipe — this is the leather argument). Faded Heriz Persian in muted rust + navy + cream. Reclaimed walnut mantel framing a Dimplex Revillusion firebox. Aged brass everywhere metal lives. Oatmeal linen drapes layered over the existing white blinds.</p>
+      <span class="pill">Reads moodier</span>
+      <span class="pill">Reads more saturated</span>
+      <span class="pill">Best for rainy evenings + whiskey</span>
+    </div>
+    <div>
+      <h4>Key pieces</h4>
+      <ul class="keyitems">
+        <li><span class="what">Loveseat</span><span class="pick">Article Sven, cognac leather</span><span class="price">$1,500</span></li>
+        <li><span class="what">Rug</span><span class="pick">Loloi Loren 6×9, faded Persian</span><span class="price">$400</span></li>
+        <li><span class="what">Fireplace</span><span class="pick">Dimplex Revillusion + walnut mantel</span><span class="price">$1,400</span></li>
+        <li><span class="what">Lighting</span><span class="pick">Brass flush-mount + floor + banker + picture</span><span class="price">$900</span></li>
+        <li><span class="what">Drapery</span><span class="pick">IKEA Sanela linen-velvet panels</span><span class="price">$200</span></li>
+        <li><span class="what">Decor</span><span class="pick">Vintage globe, brass tray, botanicals, throw</span><span class="price">$300</span></li>
+        <li><span class="what">Total target</span><span class="pick"><strong>~$4,700</strong></span><span class="price">trim → $3.5K</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============== DIRECTION 2 ============== -->
+<section class="warm">
+  <div class="kicker">Chapter 05 — Direction Two</div>
+  <div class="d-head">
+    <span class="num">02</span>
+    <h2>The Modern Cozy.</h2>
+  </div>
+  <div class="vibe">A small lamp-lit nook where the dark forest wall disappears into shadow, the linen curtains move with the open window, and the loveseat is so deep you forget what you came in for. The room smells faintly of wool, eucalyptus, and the olive tree by the window. Nothing matches; everything belongs. A place to sit still.</div>
+
+  <div class="palette">
+    <span class="swatch" style="background:#2e423a"></span>
+    <span class="swatch" style="background:#dcd0b6"></span>
+    <span class="swatch" style="background:#b8a684"></span>
+    <span class="swatch" style="background:#1d1c19"></span>
+    <span class="swatch" style="background:#a85a32"></span>
+    <span class="swatch" style="background:#d6c5a3"></span>
+  </div>
+
+  <div class="grid g2" style="margin-top:1em">
+    <figure class="imgwrap"><span class="label">View A · Symmetric seating</span><img src="renders/v1/d2-modern-cozy-A.png" alt="Modern cozy A"><figcaption>Oat bouclé, paper lantern, freestanding matte-black stove, jute + sheepskin, single branch in a wabi vase. Calm and grounded.</figcaption></figure>
+    <figure class="imgwrap"><span class="label">View B · The single nook</span><img src="renders/v1/d2-modern-cozy-B.png" alt="Modern cozy B"><figcaption>Low-profile loveseat, oak coffee table, single curated branch — the wall recedes and texture takes over.</figcaption></figure>
+  </div>
+
+  <div class="twocol" style="margin-top:4em">
+    <div>
+      <h4>Material story</h4>
+      <p>Slipcovered oat bouclé loveseat (slipcover = washable for the dog). Layered jute base + Beni Ourain on top + a draped sheepskin. Matte-black freestanding electric stove echoing a wood-burning hearth. Akari paper lantern as the literal cozy glow. Stonewashed linen drapes. Olive tree as the hero plant.</p>
+      <span class="pill">Reads calmer</span>
+      <span class="pill">Reads more spacious</span>
+      <span class="pill">Best for slow mornings + tea</span>
+    </div>
+    <div>
+      <h4>Key pieces</h4>
+      <ul class="keyitems">
+        <li><span class="what">Loveseat</span><span class="pick">Sixpenny Neva, slipcovered</span><span class="price">$2,800</span></li>
+        <li><span class="what">Rug</span><span class="pick">Jute 8×10 + Beni Ourain 5×7 + sheepskin</span><span class="price">$1,000</span></li>
+        <li><span class="what">Fireplace</span><span class="pick">Duraflame 3D Infrared stove (matte-black)</span><span class="price">$250</span></li>
+        <li><span class="what">Lighting</span><span class="pick">Akari + sconce + arc + table + flush</span><span class="price">$750</span></li>
+        <li><span class="what">Drapery</span><span class="pick">MagicLinen natural panels</span><span class="price">$300</span></li>
+        <li><span class="what">Decor</span><span class="pick">Stoneware, branches, baskets, throws</span><span class="price">$400</span></li>
+        <li><span class="what">Total target</span><span class="pick"><strong>~$5,500</strong></span><span class="price">trim → $3.5K</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============== DIRECTION 3 ============== -->
+<section>
+  <div class="kicker">Chapter 06 — Direction Three</div>
+  <div class="d-head">
+    <span class="num">03</span>
+    <h2>The Cozy Coastal.</h2>
+  </div>
+  <div class="vibe">A weathered sage room where the dark green reads like sea-glass at dusk — moody but warm. Cream linen, sun-faded Turkish wool, jute underfoot. Nothing is shiny, nothing matches, nothing is new. Every object looks inherited, beachcombed, or hand-thrown.</div>
+
+  <div class="palette">
+    <span class="swatch" style="background:#2e423a"></span>
+    <span class="swatch" style="background:#efe6d0"></span>
+    <span class="swatch" style="background:#c2a988"></span>
+    <span class="swatch" style="background:#a85a32"></span>
+    <span class="swatch" style="background:#8aa1a3"></span>
+    <span class="swatch" style="background:#d4c8a4"></span>
+  </div>
+
+  <div class="grid g2" style="margin-top:1em">
+    <figure class="imgwrap"><span class="label">View A · The cottage corner</span><img src="renders/v1/d3-cozy-coastal-A.png" alt="Cozy coastal A"><figcaption>Cream slipcover, white-mantled stove, watercolor seascape, rattan pendant, sun-faded Turkish.</figcaption></figure>
+    <figure class="imgwrap"><span class="label">View B · The fog-light view</span><img src="renders/v1/d3-cozy-coastal-B.png" alt="Cozy coastal B"><figcaption>Gallery of small soft seascapes, white cottage stove between windows, slipcovered loveseat with chunky cream throw.</figcaption></figure>
+  </div>
+
+  <div class="twocol" style="margin-top:4em">
+    <div>
+      <h4>Material story</h4>
+      <p>Slipcovered oatmeal-linen roll-arm loveseat (washable, dog-friendly). Sun-faded vintage Turkish or Oushak — the rug carries the muted olive/terracotta that reconciles green wall to cream furniture without effort. White-enameled freestanding stove. Rattan pendant. Floor-length cream linen drapes. Eucalyptus and stoneware.</p>
+      <span class="pill">Reads lighter</span>
+      <span class="pill">Reads softer</span>
+      <span class="pill">Best for dog naps + window-open afternoons</span>
+      <p style="margin-top:1.4em;font-size:.85rem;color:var(--ink-soft)"><strong style="color:var(--accent)">Honest note:</strong> the AI flattered the green wall lighter than it is. In reality the wall stays its current dark green; cream linen and warm sunlight reframe how it reads. A v2 render would set expectations correctly.</p>
+    </div>
+    <div>
+      <h4>Key pieces</h4>
+      <ul class="keyitems">
+        <li><span class="what">Loveseat</span><span class="pick">Pottery Barn York Roll Arm (slipcover)</span><span class="price">$1,800</span></li>
+        <li><span class="what">Rug</span><span class="pick">Jute base + sun-faded Turkish 5×7</span><span class="price">$900</span></li>
+        <li><span class="what">Fireplace</span><span class="pick">White-enameled freestanding stove</span><span class="price">$450</span></li>
+        <li><span class="what">Lighting</span><span class="pick">Rattan pendant + ceramic lamp + sconce + picture</span><span class="price">$700</span></li>
+        <li><span class="what">Drapery</span><span class="pick">Cream linen panels (puddled)</span><span class="price">$300</span></li>
+        <li><span class="what">Decor</span><span class="pick">Stoneware, baskets, faux olive, eucalyptus</span><span class="price">$400</span></li>
+        <li><span class="what">Total target</span><span class="pick"><strong>~$4,550</strong></span><span class="price">trim → $3.4K</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============== COMPARE ============== -->
+<section class="warm">
+  <div class="kicker">Chapter 07 — Side by side</div>
+  <h2>Three rooms, three lives.</h2>
+  <p class="lede">The same wall, the same floor, the same windows — three different feelings.</p>
+
+  <table class="compare">
+    <thead><tr><th></th><th>01 · Cozy Library</th><th>02 · Modern Cozy</th><th>03 · Cozy Coastal</th></tr></thead>
+    <tbody>
+      <tr><td>Vibe</td><td>Tenured professor's study</td><td>Lamp-lit Japandi nook</td><td>Cornish cottage on a foggy afternoon</td></tr>
+      <tr><td>Loveseat</td><td>Cognac leather roll-arm</td><td>Oat bouclé deep slipcover</td><td>Cream linen slipcover roll-arm</td></tr>
+      <tr><td>Rug</td><td>Faded Heriz Persian</td><td>Jute + Beni Ourain</td><td>Jute + sun-faded Turkish</td></tr>
+      <tr><td>Fireplace</td><td>Wood-mantel + Dimplex insert</td><td>Matte-black freestanding stove</td><td>White-enameled freestanding stove</td></tr>
+      <tr><td>Lighting hero</td><td>Brass banker's lamp</td><td>Akari paper lantern</td><td>Rattan dome pendant</td></tr>
+      <tr><td>Reads as</td><td>Moodier, more saturated</td><td>Calmer, more spacious</td><td>Lighter, softer</td></tr>
+      <tr><td>Best for</td><td>Reading + whiskey + rain</td><td>Slow mornings + tea</td><td>Dog naps + windows open</td></tr>
+      <tr><td>Budget midpoint</td><td>~$4,700</td><td>~$5,500</td><td>~$4,550</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============== RECOMMENDATION ============== -->
+<section class="dark">
+  <div class="kicker" style="color:var(--paper-warm);opacity:.7">Chapter 08 — My take</div>
+  <h2 style="color:var(--paper)">If you make me pick.</h2>
+  <p class="lede" style="color:var(--paper-warm);opacity:.85">D1 — the Cozy Library — is the strongest match for the room's existing bones. The dark green wall <em>wants</em> to be a library. But you're a dog-on-couch household, which makes leather a mixed pick (great for hair, but requires summer-AC discipline and won't be the snuggle-down feel you described).</p>
+
+  <div class="twocol" style="margin-top:3em;align-items:start">
+    <div>
+      <h3 style="color:var(--paper)">Refined recommendation</h3>
+      <p style="color:var(--paper-warm)"><strong>D1 silhouette × D2 fabric strategy.</strong> The Cozy Library's mood (cognac leather chair as accent, brass picture light, Persian rug, electric fireplace with reclaimed wood mantel) — but the <em>main</em> loveseat in a slipcovered performance fabric like Sixpenny's Vintage Linen or PB's Performance Everydaylinen. Slipcover wins for the dog. Cognac leather still appears in the room as a small accent piece (a vintage chair, a brass-tacked ottoman, leather-bound books).</p>
+      <p style="color:var(--paper-warm)">This is the room I'd build first. You can always layer toward D2 (more wabi, less library) or D3 (lighter, more cottage) once you live in it.</p>
+    </div>
+    <div>
+      <h3 style="color:var(--paper)">Confirmed inputs</h3>
+      <ul style="color:var(--paper-warm)">
+        <li>Open to all directions ✓</li>
+        <li>Desk optional — I'll plan a slim desk-under-window option for v2</li>
+        <li>No TV ✓ — fireplace is the unambiguous focal anchor</li>
+        <li>Loveseat faces the fireplace wall ✓</li>
+        <li>Room ≈ 10 × 11 ft confirmed ✓</li>
+        <li><strong>Dog on couch ✓</strong> — slipcover wins, leather drops to accent</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============== NEXT ============== -->
+<section>
+  <div class="kicker">Chapter 09 — Where we go next</div>
+  <h2>What v2 looks like.</h2>
+  <p class="lede">Once you tell me which direction (or hybrid) to commit to, I'll re-render at higher fidelity, build the buy-order plan, and start sourcing.</p>
+
+  <div class="nextsteps">
+    <div class="step">
+      <h4>v2 Renders</h4>
+      <p>Higher fidelity. Multiple angles. Loveseat orientation toward the fireplace wall as you specified. Realistic green-wall color. The actual loveseat model rendered in place. With and without a slim desk under the window.</p>
+    </div>
+    <div class="step">
+      <h4>Buy-order plan</h4>
+      <p>Direct purchase links. Stock checks. Lead-time-aware ordering: rug + fireplace first (so the room has a center), then loveseat, then lighting, then decor. The room is livable at every stage.</p>
+    </div>
+    <div class="step">
+      <h4>Task ledger</h4>
+      <p>Each item gets a <span class="pin">tasks/t-NNNN.md</span> entry with status, links, and price. I escalate to you for any commit-making decision per the project charter.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:5em;padding:2em;border:1px solid var(--rule);border-radius:4px;background:rgba(255,255,255,.5)">
+    <h4>What I need from you to move</h4>
+    <p style="margin:0">One sentence. <em>"Go with D1, slipcover-not-leather"</em> is enough. Or, <em>"Push D2 a bit warmer"</em>. Or, <em>"Show me a hybrid of D1 and D3"</em>. I'll do the rest.</p>
+  </div>
+</section>
+
+<footer>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:2em">
+    <div>
+      <div class="sig">JC Denton</div>
+      <div style="opacity:.6;margin-top:.4em">Studio Notes · Project Cozy Room · v1</div>
+    </div>
+    <div style="opacity:.6;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;text-align:right">
+      Renders by Gemini 3 Pro Image · against your real photographs<br>
+      Research compiled across r/CozyPlaces, design blogs, and trade catalogs<br>
+      Full source materials in <span class="pin" style="color:#ddd2b8">room/vision/</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
